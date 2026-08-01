@@ -1,0 +1,6 @@
+{
+  "name": "NTANDA",
+  "description": "African Cultural Preservation & Digital Heritage Archive for ancestral regalia, artifacts, and ethnic traditions.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

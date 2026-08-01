@@ -1,0 +1,21 @@
+# dependencies
+node_modules/
+
+# build output
+build/
+dist/
+.vite/
+
+# runtime / generated
+server.js
+coverage/
+
+# logs
+*.log
+
+# OS
+.DS_Store
+
+# env files (keep the example)
+.env*
+!.env.example
