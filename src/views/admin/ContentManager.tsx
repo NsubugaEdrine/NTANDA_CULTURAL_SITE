@@ -14,11 +14,11 @@
 //     upload that returns a public storage URL.
 //   - Save routes the payload to the correct create/update helper, and
 //     Delete confirms with the browser dialog before removing the row.
-// @ts-ignore: allow compiling without @types/react installed
 import React, { useEffect, useState, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '../../lib/auth';
 import { DashboardShell } from '../../components/dashboard/DashboardShell';
+import type { ArtifactItem, CommunityItem, Page, Post, PostStatus, PostType, RegaliaItem } from '../../types';
 import {
   fetchRegalia,
   createRegalia,
@@ -43,17 +43,6 @@ import {
   uploadContentFile,
 } from '../../lib/content';
 import { Alert, Badge, Button, Card, EmptyState, Input, Select, Spinner, TextArea } from '../../components/ui/form';
-
-// Provide minimal JSX/runtime declarations when @types/react is not installed.
-// This silences TypeScript errors in environments without React typings.
-declare module 'react/jsx-runtime';
-declare global {
-  namespace JSX {
-    interface IntrinsicElements {
-      [elemName: string]: any;
-    }
-  }
-}
 
 type Tab = 'regalia' | 'artifacts' | 'communities' | 'posts' | 'pages';
 
@@ -195,7 +184,7 @@ export const ContentManager: React.FC = () => {
   const setValue = (key: string, value: string) =>
     setFormValues((prev: Record<string, string>) => ({ ...prev, [key]: value }));
 
-  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement> | any, targetKey: string) => {
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, targetKey: string) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploadingImage(true);
@@ -239,28 +228,41 @@ export const ContentManager: React.FC = () => {
       return payload;
     };
 
-    const payload = buildPayload() as any;
+    const payload = buildPayload();
     let result: { error: string | null };
     if (tab === 'regalia') {
       result = editing
-        ? await updateRegalia(editing.id, payload)
-        : await createRegalia({ ...payload, created_by: user.id });
+        ? await updateRegalia(editing.id, payload as Partial<RegaliaItem>)
+        : await createRegalia({ ...(payload as Partial<RegaliaItem>), created_by: user.id });
     } else if (tab === 'artifacts') {
       result = editing
-        ? await updateArtifact(editing.id, payload)
-        : await createArtifact({ ...payload, created_by: user.id });
+        ? await updateArtifact(editing.id, payload as Partial<ArtifactItem>)
+        : await createArtifact({ ...(payload as Partial<ArtifactItem>), created_by: user.id });
     } else if (tab === 'communities') {
       result = editing
-        ? await updateCommunity(editing.id, payload)
-        : await createCommunity({ ...payload, created_by: user.id });
+        ? await updateCommunity(editing.id, payload as Partial<CommunityItem>)
+        : await createCommunity({ ...(payload as Partial<CommunityItem>), created_by: user.id });
     } else if (tab === 'posts') {
       result = editing
-        ? await updatePost(editing.id, payload)
-        : await createPost({ author_id: user.id, title: (payload.title as string) ?? 'Untitled', content: '', ...payload });
+        ? await updatePost(editing.id, payload as Partial<Post>)
+        : await createPost({
+            author_id: user.id,
+            title: (payload.title as string) ?? 'Untitled',
+            content: (payload.content as string) ?? '',
+            excerpt: payload.excerpt as string | undefined,
+            content_type: (payload.content_type as PostType) ?? 'post',
+            status: (payload.status as PostStatus) ?? 'draft',
+          });
     } else {
       result = editing
-        ? await updatePage(editing.id, payload)
-        : await createPage({ author_id: user.id, title: (payload.title as string) ?? 'Untitled', ...payload });
+        ? await updatePage(editing.id, payload as Partial<Page>)
+        : await createPage({
+            author_id: user.id,
+            title: (payload.title as string) ?? 'Untitled',
+            description: payload.description as string | undefined,
+            content: payload.content as string | undefined,
+            is_public: payload.is_public as boolean | undefined,
+          });
     }
 
     setSaving(false);
