@@ -1,5 +1,15 @@
+// GalleryView.tsx — Regalia Gallery tab.
+// Responsibilities:
+//   - Loads all regalia items and lets visitors filter by category chips
+//     (All Collections, Garments, Jewelry, Headwear, Footwear, Ceremonial)
+//     and free-text search over title/tribe/description/category.
+//   - useMemo keeps filtering cheap; results render in a responsive bento
+//     grid with hover effects.
+//   - Each card supports opening the detail modal and toggling the bookmark;
+//     saved state comes in via savedItemIds and onToggleSave props.
+//   - Shows loading, empty (with Reset Filters) and populated states.
 import React, { useState, useMemo } from 'react';
-import { FEATURED_REGALIA } from '../data/mockData';
+import { useRegalia } from '../lib/useContent';
 import { RegaliaItem } from '../types';
 
 interface GalleryViewProps {
@@ -15,11 +25,12 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All Collections');
+  const { items: allItems, loading } = useRegalia();
 
   const categories = ['All Collections', 'Garments', 'Jewelry', 'Headwear', 'Footwear', 'Ceremonial'];
 
   const filteredItems = useMemo(() => {
-    return FEATURED_REGALIA.filter((item) => {
+    return allItems.filter((item) => {
       const matchesCategory =
         selectedCategory === 'All Collections' || item.category === selectedCategory;
       const matchesSearch =
@@ -29,7 +40,7 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
         item.category.toLowerCase().includes(searchQuery.toLowerCase());
       return matchesCategory && matchesSearch;
     });
-  }, [searchQuery, selectedCategory]);
+  }, [allItems, searchQuery, selectedCategory]);
 
   return (
     <div className="pt-20 pb-24 min-h-screen pattern-overlay">
@@ -91,7 +102,12 @@ export const GalleryView: React.FC<GalleryViewProps> = ({
         </section>
 
         {/* Bento Grid of Regalia */}
-        {filteredItems.length === 0 ? (
+        {loading ? (
+          <div className="text-center py-16 bg-white rounded-xl border border-[#dbc1ba]/30 p-8">
+            <div className="w-8 h-8 border-4 border-[#dbc1ba] border-t-[#6f250f] rounded-full animate-spin mx-auto"></div>
+            <p className="font-body-md text-sm text-[#55423e] mt-3">Loading heritage collections...</p>
+          </div>
+        ) : filteredItems.length === 0 ? (
           <div className="text-center py-16 bg-white rounded-xl border border-[#dbc1ba]/30 p-8">
             <span className="material-symbols-outlined text-5xl text-[#88726c] mb-2">
               search_off

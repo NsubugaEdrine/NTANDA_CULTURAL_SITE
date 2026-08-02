@@ -1,3 +1,15 @@
+// AudioPlayerWidget.tsx — Synthesized ambient soundscape player.
+// Responsibilities:
+//   - Plays a looping "talking drums + pentatonic harp" soundscape that is
+//     generated live with the Web Audio API (no audio files required).
+//   - startSoundscape creates/suspends an AudioContext and schedules a
+//     repeating 16-step pattern every 350ms:
+//       * Low sine kick on even steps (the talking drum beat).
+//       * A pitch-bending triangle "talking drum" call every 3rd step.
+//       * A plucked sine harp note from the C-major pentatonic scale each step.
+//   - stopSoundscape clears the interval and suspends the context; the
+//     cleanup effect guarantees the timer is cleared on unmount.
+//   - UI shows play/pause state and animated equalizer bars while playing.
 import React, { useState, useEffect, useRef } from 'react';
 
 interface AudioPlayerWidgetProps {

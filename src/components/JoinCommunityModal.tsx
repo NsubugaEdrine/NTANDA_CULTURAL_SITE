@@ -1,3 +1,12 @@
+// JoinCommunityModal.tsx — "Join Community & Contribute" form modal.
+// Responsibilities:
+//   - Returns null when closed; opens a two-state modal.
+//   - Collects an archive contribution: full name, email, clan/community,
+//     entry type (oral memory, family artifact, lineage story, scholar
+//     research) and the story/artifact details.
+//   - On submit it validates via the form and shows a confirmation screen
+//     (no backend call yet — this is a UI prototype; wire the submission to
+//     your API or a submissions table to persist it).
 import React, { useState } from 'react';
 
 interface JoinCommunityModalProps {

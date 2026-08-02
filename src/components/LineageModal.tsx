@@ -1,3 +1,11 @@
+// LineageModal.tsx — Community lineage & totem detail modal.
+// Responsibilities:
+//   - Returns null when no community is selected; otherwise overlays a modal.
+//   - Shows community stats (population, language, cultural leadership),
+//     the ancestral/monarchical history, the clan totems (with symbols,
+//     meanings and descriptions) and key heritage practices.
+//   - Footer offers Close or "Explore Community Regalia", which closes the
+//     modal and jumps to the search tab pre-filled with the community name.
 import React from 'react';
 import { CommunityItem } from '../types';
 

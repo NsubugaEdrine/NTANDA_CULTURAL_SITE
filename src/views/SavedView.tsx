@@ -1,5 +1,13 @@
+// SavedView.tsx — "My Saved Archives" tab.
+// Responsibilities:
+//   - Filters the loaded regalia and artifacts down to the ids present in
+//     savedItemIds (the localStorage-backed bookmark list owned by SiteApp).
+//   - Shows the saved regalia and saved artifacts in two sections with a
+//     running total in the header.
+//   - Empty state offers navigation to the Gallery or Archive tabs.
+//   - Cards let the user open the detail modal or remove the bookmark.
 import React from 'react';
-import { FEATURED_REGALIA, ARTIFACTS } from '../data/mockData';
+import { useRegalia, useArtifacts } from '../lib/useContent';
 import { RegaliaItem, ArtifactItem, NavigationTab } from '../types';
 
 interface SavedViewProps {
@@ -15,8 +23,10 @@ export const SavedView: React.FC<SavedViewProps> = ({
   onToggleSave,
   onNavigate
 }) => {
-  const savedRegalia = FEATURED_REGALIA.filter((item) => savedItemIds.includes(item.id));
-  const savedArtifacts = ARTIFACTS.filter((item) => savedItemIds.includes(item.id));
+  const { items: allRegalia } = useRegalia();
+  const { items: allArtifacts } = useArtifacts();
+  const savedRegalia = allRegalia.filter((item) => savedItemIds.includes(item.id));
+  const savedArtifacts = allArtifacts.filter((item) => savedItemIds.includes(item.id));
   const totalSaved = savedRegalia.length + savedArtifacts.length;
 
   return (

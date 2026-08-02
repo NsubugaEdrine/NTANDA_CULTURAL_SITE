@@ -1,3 +1,10 @@
+// BottomNavBar.tsx — Mobile-first bottom tab bar.
+// Responsibilities:
+//   - Renders the 5 primary destinations (Home, Gallery, Communities,
+//     Search, Saved) as fixed bottom navigation.
+//   - Highlights the active tab (filled icon + top accent border).
+//   - Shows a badge on "Saved" with the current bookmark count so users
+//     always know how many items are in their personal archive.
 import React from 'react';
 import { NavigationTab } from '../types';
 

@@ -1,3 +1,16 @@
+// mockData.ts — Seed / fallback cultural content (static fixtures).
+// Responsibilities:
+//   - FEATURED_REGALIA: sample royal regalia records (crowns, shields,
+//     garments, jewelry, headwear) with full cultural metadata.
+//   - ARTIFACTS: sample digital artifact records with reference numbers,
+//     estimated ages, historical context and optional audio tracks.
+//   - COMMUNITIES: sample ethnic-community records with population, language,
+//     leadership, clan totems and key traditions.
+//   - CULTURAL_NOTIFICATIONS: mock feed used by the notifications modal.
+// NOTE: The public views actually read live data from Supabase via
+// lib/useContent.ts. These fixtures are used as a reference dataset and as
+// the source for the notifications modal — seed your database with this
+// content (or use the Admin > Content Manager) so the site is populated.
 import { RegaliaItem, ArtifactItem, CommunityItem } from '../types';
 
 export const FEATURED_REGALIA: RegaliaItem[] = [

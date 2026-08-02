@@ -1,3 +1,11 @@
+// ItemDetailModal.tsx — Full detail view for a regalia item or artifact.
+// Responsibilities:
+//   - Returns null when no item is selected; otherwise overlays a modal.
+//   - Detects whether the item is regalia ('tribe' present) or an artifact
+//     and renders the appropriate fields (stats grid, material, description,
+//     spiritual/historical significance).
+//   - Shows the AudioPlayerWidget when an artifact has an audioTrack.
+//   - Footer lets the user save/unsave the item and close the modal.
 import React from 'react';
 import { RegaliaItem, ArtifactItem } from '../types';
 import { AudioPlayerWidget } from './AudioPlayerWidget';

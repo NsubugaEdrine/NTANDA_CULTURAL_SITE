@@ -1,3 +1,9 @@
+// Footer.tsx — Site footer for the public heritage site.
+// Responsibilities:
+//   - Displays the NTANDA wordmark, tagline and copyright.
+//   - Quick links: Archives (search tab), Ethical Guidelines (opens the
+//     ethical charter modal) and Credits & Lineages (communities tab).
+//   - All callbacks are optional so the footer can be reused anywhere.
 import React from 'react';
 import { NavigationTab } from '../types';
 

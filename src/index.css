@@ -1,3 +1,17 @@
+/* index.css — Global stylesheet for the NTANDA design system.
+   Responsibilities:
+     - Imports Tailwind CSS v4.
+     - Defines the Material 3 inspired color palette as CSS custom
+       properties on :root (primary, secondary, tertiary, surfaces, etc.)
+       which the Tailwind arbitrary-value classes reference (e.g. text-[#6f250f]).
+     - Sets base typography (Hanken Grotesk body, Libre Caslon headings).
+     - Provides reusable utility classes:
+         .font-*       display/headline/body/label text styles
+         .hide-scrollbar / .custom-scrollbar   horizontal scroll UX
+         .hero-pattern, .weave-accent, .pattern-overlay, .weave-pattern
+                       decorative background textures used across views
+         .material-symbols-*  filled vs outlined icon variants
+*/
 @import "tailwindcss";
 
 @layer base {

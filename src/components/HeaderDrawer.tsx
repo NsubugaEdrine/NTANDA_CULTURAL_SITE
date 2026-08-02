@@ -1,5 +1,16 @@
+// HeaderDrawer.tsx — Slide-in navigation menu from the hamburger button.
+// Responsibilities:
+//   - Backdrop + left drawer overlay; returns null when closed.
+//   - Primary navigation links that switch the active tab and close the
+//     drawer (Home, Gallery, Communities, Archive, Saved, Community Stories).
+//   - Auth-aware account section: guests get "Sign In / Sign Up"; signed-in
+//     users get My Studio, Admin Panel (admins only), My Profile and Sign Out.
+//   - Special actions: opens the Ethical Preservation Guidelines modal and
+//     the Join Community & Contribute form.
+//   - Brand footer inside the drawer with the heritage tagline.
 import React from 'react';
 import { NavigationTab } from '../types';
+import { useAuth } from '../lib/auth';
 
 interface HeaderDrawerProps {
   isOpen: boolean;
@@ -17,6 +28,7 @@ export const HeaderDrawer: React.FC<HeaderDrawerProps> = ({
   onOpenJoinModal,
   onOpenEthicalGuidelines
 }) => {
+  const { session, profile, isAdmin, signOut } = useAuth();
   if (!isOpen) return null;
 
   return (
@@ -104,6 +116,70 @@ export const HeaderDrawer: React.FC<HeaderDrawerProps> = ({
               <span className="material-symbols-outlined text-[#6f250f]">bookmark</span>
               My Saved Archives
             </button>
+
+            <a
+              href="/stories"
+              onClick={onClose}
+              className="w-full flex items-center gap-4 px-4 py-3 rounded-lg text-left font-body-lg text-[#1c1b1a] hover:bg-[#f1edeb] transition-colors"
+            >
+              <span className="material-symbols-outlined text-[#6f250f]">auto_stories</span>
+              Community Stories
+            </a>
+          </div>
+
+          <hr className="border-[#dbc1ba]/20 my-2" />
+
+          {/* Account Actions */}
+          <div className="py-4 space-y-2">
+            {session ? (
+              <>
+                <a
+                  href="/dashboard"
+                  onClick={onClose}
+                  className="w-full flex items-center gap-4 px-4 py-3 rounded-lg text-left font-body-lg text-[#1c1b1a] hover:bg-[#f1edeb] transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[#6f250f]">dashboard</span>
+                  My Studio
+                </a>
+                {isAdmin && (
+                  <a
+                    href="/admin"
+                    onClick={onClose}
+                    className="w-full flex items-center gap-4 px-4 py-3 rounded-lg text-left font-body-lg text-[#1c1b1a] hover:bg-[#f1edeb] transition-colors"
+                  >
+                    <span className="material-symbols-outlined text-[#6f250f]">admin_panel_settings</span>
+                    Admin Panel
+                  </a>
+                )}
+                <a
+                  href="/profile"
+                  onClick={onClose}
+                  className="w-full flex items-center gap-4 px-4 py-3 rounded-lg text-left font-body-lg text-[#1c1b1a] hover:bg-[#f1edeb] transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[#6f250f]">person</span>
+                  My Profile
+                </a>
+                <button
+                  onClick={() => {
+                    signOut();
+                    onClose();
+                  }}
+                  className="w-full flex items-center gap-4 px-4 py-3 rounded-lg text-left font-body-lg text-[#8a1c15] hover:bg-[#f1edeb] transition-colors"
+                >
+                  <span className="material-symbols-outlined text-[#8a1c15]">logout</span>
+                  Sign Out
+                </button>
+              </>
+            ) : (
+              <a
+                href="/auth"
+                onClick={onClose}
+                className="w-full flex items-center gap-4 px-4 py-3 rounded-lg text-left font-body-lg text-[#1c1b1a] hover:bg-[#f1edeb] transition-colors"
+              >
+                <span className="material-symbols-outlined text-[#6f250f]">login</span>
+                Sign In / Sign Up
+              </a>
+            )}
           </div>
 
           <hr className="border-[#dbc1ba]/20 my-2" />

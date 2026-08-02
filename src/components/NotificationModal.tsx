@@ -1,3 +1,9 @@
+// NotificationModal.tsx — Heritage archive updates panel.
+// Responsibilities:
+//   - Returns null when closed; otherwise shows a modal listing the
+//     CULTURAL_NOTIFICATIONS mock feed (category, title, message, time).
+//   - Data currently comes from ../data/mockData; replace the source with a
+//     real notifications table when the backend feed exists.
 import React from 'react';
 import { CULTURAL_NOTIFICATIONS } from '../data/mockData';
 

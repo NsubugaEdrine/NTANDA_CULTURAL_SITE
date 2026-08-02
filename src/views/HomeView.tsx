@@ -1,5 +1,15 @@
+// HomeView.tsx — Landing page of the public site (Home tab).
+// Responsibilities:
+//   - Pulls live regalia, artifacts and communities from Supabase hooks.
+//   - Hero section with brand messaging and Explore Archives / Join Community
+//     calls to action.
+//   - "Featured Regalia" horizontal scroller (only items flagged isFeatured).
+//   - "Ethnic Spotlights" circular avatars; clicking opens the lineage modal.
+//   - "Latest Artifacts" grid (first 3 artifacts) with gradient overlays.
+//   - All click-through is delegated via props (onNavigate, onSelectItem,
+//     onSelectCommunity, onOpenJoinModal) so SiteApp owns the shared state.
 import React from 'react';
-import { FEATURED_REGALIA, COMMUNITIES, ARTIFACTS } from '../data/mockData';
+import { useRegalia, useArtifacts, useCommunities } from '../lib/useContent';
 import { RegaliaItem, ArtifactItem, CommunityItem, NavigationTab } from '../types';
 
 interface HomeViewProps {
@@ -15,8 +25,12 @@ export const HomeView: React.FC<HomeViewProps> = ({
   onSelectCommunity,
   onOpenJoinModal
 }) => {
-  const featuredRegaliaList = FEATURED_REGALIA.filter((r) => r.isFeatured);
-  const latestArtifacts = ARTIFACTS.slice(4, 7); // Mbugu Tapestry, Communal Libation Bowl, Royal Ennanga
+  const { items: regalia } = useRegalia();
+  const { items: artifacts } = useArtifacts();
+  const { items: communities } = useCommunities();
+
+  const featuredRegaliaList = regalia.filter((r) => r.isFeatured);
+  const latestArtifacts = artifacts.slice(0, 3);
 
   return (
     <div className="pt-16 pb-24 md:max-w-7xl md:mx-auto">
@@ -127,7 +141,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
         </div>
 
         <div className="flex overflow-x-auto hide-scrollbar gap-6 px-4 md:px-16">
-          {COMMUNITIES.map((com) => (
+          {communities.map((com) => (
             <div
               key={com.id}
               onClick={() => onSelectCommunity(com)}

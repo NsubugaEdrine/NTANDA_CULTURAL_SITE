@@ -1,5 +1,12 @@
+// CommunitiesView.tsx — Ethnic Communities tab.
+// Responsibilities:
+//   - Loads all communities and filters by search text (name/region/
+//     description/language) and a region dropdown.
+//   - Renders alternating image + text rows per community.
+//   - Each row offers "Explore Archives" (jumps to search pre-filled with
+//     the community name) and "View Lineage & Totems" (opens LineageModal).
 import React, { useState, useMemo } from 'react';
-import { COMMUNITIES } from '../data/mockData';
+import { useCommunities } from '../lib/useContent';
 import { CommunityItem } from '../types';
 
 interface CommunitiesViewProps {
@@ -13,11 +20,12 @@ export const CommunitiesView: React.FC<CommunitiesViewProps> = ({
 }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedRegion, setSelectedRegion] = useState<string>('All');
+  const { items: communities, loading } = useCommunities();
 
   const regions = ['All', 'Central Region', 'North Eastern Region', 'Western Region', 'Eastern Region', 'North Western Region'];
 
   const filteredCommunities = useMemo(() => {
-    return COMMUNITIES.filter((com) => {
+    return communities.filter((com) => {
       const matchesRegion = selectedRegion === 'All' || com.region === selectedRegion;
       const matchesSearch =
         com.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -26,7 +34,7 @@ export const CommunitiesView: React.FC<CommunitiesViewProps> = ({
         (com.language && com.language.toLowerCase().includes(searchQuery.toLowerCase()));
       return matchesRegion && matchesSearch;
     });
-  }, [searchQuery, selectedRegion]);
+  }, [communities, searchQuery, selectedRegion]);
 
   return (
     <div className="pt-20 pb-24 max-w-7xl mx-auto px-4 lg:px-16 weave-pattern min-h-screen">
@@ -72,7 +80,12 @@ export const CommunitiesView: React.FC<CommunitiesViewProps> = ({
       </div>
 
       {/* Community List */}
-      {filteredCommunities.length === 0 ? (
+      {loading ? (
+        <div className="text-center py-16 bg-white rounded-xl border border-[#dbc1ba]/30 p-8">
+          <div className="w-8 h-8 border-4 border-[#dbc1ba] border-t-[#6f250f] rounded-full animate-spin mx-auto"></div>
+          <p className="font-body-md text-sm text-[#55423e] mt-3">Loading communities...</p>
+        </div>
+      ) : filteredCommunities.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-xl border border-[#dbc1ba]/30 p-8">
           <span className="material-symbols-outlined text-5xl text-[#88726c] mb-2">
             search_off

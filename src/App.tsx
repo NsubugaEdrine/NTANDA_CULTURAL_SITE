@@ -1,213 +1,161 @@
-import React, { useState, useEffect } from 'react';
-import { NavigationTab, RegaliaItem, ArtifactItem, CommunityItem } from './types';
-import { TopAppBar } from './components/TopAppBar';
-import { BottomNavBar } from './components/BottomNavBar';
-import { HeaderDrawer } from './components/HeaderDrawer';
-import { ItemDetailModal } from './components/ItemDetailModal';
-import { LineageModal } from './components/LineageModal';
-import { JoinCommunityModal } from './components/JoinCommunityModal';
-import { NotificationModal } from './components/NotificationModal';
-import { Footer } from './components/Footer';
+// App.tsx — Root component and client-side router.
+// Responsibilities:
+//   - Wraps the whole app in the AuthProvider so every page can read the
+//     current session, profile and role.
+//   - Defines every route in the app and which component renders it.
+//   - Uses route guard wrappers to enforce access rules:
+//       * ProtectedRoute   -> must be signed in (dashboard, profile, editors)
+//       * AdminRoute       -> must be signed in AND have the 'admin' role
+//       * PublicOnlyRoute  -> must be signed OUT (auth pages only)
+//   - Route table overview:
+//       /                    public heritage site (SiteApp)
+//       /stories             public community feed of user posts/pages
+//       /u/:userName         public profile page of a member
+//       /auth                sign in / sign up
+//       /profile             signed-in user profile editor
+//       /dashboard*          contributor studio (posts, pages, editors)
+//       /admin*              admin console (dashboard, content, users)
+//       *                    fallback 404 page
+import React from 'react';
+import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
+import { AuthProvider } from './lib/auth';
+import { ProtectedRoute, AdminRoute, PublicOnlyRoute } from './lib/guards';
+import SiteApp from './site/SiteApp';
+import { AuthPage } from './views/auth/AuthPage';
+import { ProfilePage } from './views/auth/ProfilePage';
+import { UserDashboard } from './views/dashboard/UserDashboard';
+import { PostsView } from './views/dashboard/PostsView';
+import { PostEditor } from './views/dashboard/PostEditor';
+import { PagesView } from './views/dashboard/PagesView';
+import { PageEditor } from './views/dashboard/PageEditor';
+import { AdminDashboard } from './views/admin/AdminDashboard';
+import { ContentManager } from './views/admin/ContentManager';
+import { UsersManager } from './views/admin/UsersManager';
+import { CommunityFeed } from './views/public/CommunityFeed';
+import { PublicProfile } from './views/public/PublicProfile';
 
-import { HomeView } from './views/HomeView';
-import { GalleryView } from './views/GalleryView';
-import { CommunitiesView } from './views/CommunitiesView';
-import { SearchView } from './views/SearchView';
-import { SavedView } from './views/SavedView';
+const NotFound: React.FC = () => (
+  <div className="min-h-screen flex flex-col items-center justify-center bg-[#fdf8f6] p-6">
+    <h1 className="font-display-lg text-5xl text-[#6f250f] font-bold">404</h1>
+    <p className="font-body-lg text-[#55423e] mt-2 mb-6">This page has been lost to history.</p>
+    <Link to="/" className="bg-[#6f250f] text-white px-6 py-3 rounded-lg font-label-md text-sm hover:bg-[#8e3b24]">
+      Return Home
+    </Link>
+  </div>
+);
 
 export default function App() {
-  const [activeTab, setActiveTab] = useState<NavigationTab>('home');
-  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
-  const [isNotificationsOpen, setIsNotificationsOpen] = useState(false);
-  const [isJoinModalOpen, setIsJoinModalOpen] = useState(false);
-  const [isEthicalModalOpen, setIsEthicalModalOpen] = useState(false);
-
-  // Selected detail states
-  const [selectedItem, setSelectedItem] = useState<RegaliaItem | ArtifactItem | null>(null);
-  const [selectedCommunity, setSelectedCommunity] = useState<CommunityItem | null>(null);
-  const [searchInitialQuery, setSearchInitialQuery] = useState('');
-
-  // Local storage for saved bookmarks
-  const [savedItemIds, setSavedItemIds] = useState<string[]>(() => {
-    try {
-      const stored = localStorage.getItem('ntanda_saved_items');
-      return stored ? JSON.parse(stored) : ['reg-omukama-crown', 'art-talking-drums'];
-    } catch {
-      return ['reg-omukama-crown', 'art-talking-drums'];
-    }
-  });
-
-  useEffect(() => {
-    try {
-      localStorage.setItem('ntanda_saved_items', JSON.stringify(savedItemIds));
-    } catch {
-      // Ignore quota errors
-    }
-  }, [savedItemIds]);
-
-  const toggleSave = (id: string) => {
-    setSavedItemIds((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
-
-  const handleExploreCommunityArchives = (communityName: string) => {
-    setSearchInitialQuery(communityName);
-    setActiveTab('search');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleTabChange = (tab: NavigationTab) => {
-    setActiveTab(tab);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   return (
-    <div className="min-[#fdf8f6] min-h-screen text-[#1c1b1a] relative flex flex-col font-body-md">
-      {/* Top Header */}
-      <TopAppBar
-        onOpenDrawer={() => setIsDrawerOpen(true)}
-        onOpenNotifications={() => setIsNotificationsOpen(true)}
-        onNavigateHome={() => handleTabChange('home')}
-      />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<SiteApp />} />
+          <Route path="/stories" element={<CommunityFeed />} />
+          <Route path="/u/:userName" element={<PublicProfile />} />
 
-      {/* Main Content Body */}
-      <main className="flex-grow">
-        {activeTab === 'home' && (
-          <HomeView
-            onNavigate={handleTabChange}
-            onSelectItem={(item) => setSelectedItem(item)}
-            onSelectCommunity={(community) => setSelectedCommunity(community)}
-            onOpenJoinModal={() => setIsJoinModalOpen(true)}
+          <Route
+            path="/auth"
+            element={
+              <PublicOnlyRoute>
+                <AuthPage />
+              </PublicOnlyRoute>
+            }
           />
-        )}
 
-        {activeTab === 'gallery' && (
-          <GalleryView
-            onSelectItem={(item) => setSelectedItem(item)}
-            savedItemIds={savedItemIds}
-            onToggleSave={toggleSave}
+          <Route
+            path="/profile"
+            element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            }
           />
-        )}
 
-        {activeTab === 'communities' && (
-          <CommunitiesView
-            onSelectCommunity={(community) => setSelectedCommunity(community)}
-            onExploreArchives={handleExploreCommunityArchives}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <UserDashboard />
+              </ProtectedRoute>
+            }
           />
-        )}
-
-        {activeTab === 'search' && (
-          <SearchView
-            onSelectArtifact={(artifact) => setSelectedItem(artifact)}
-            savedItemIds={savedItemIds}
-            onToggleSave={toggleSave}
-            initialQuery={searchInitialQuery}
+          <Route
+            path="/dashboard/posts"
+            element={
+              <ProtectedRoute>
+                <PostsView />
+              </ProtectedRoute>
+            }
           />
-        )}
-
-        {activeTab === 'saved' && (
-          <SavedView
-            savedItemIds={savedItemIds}
-            onSelectItem={(item) => setSelectedItem(item)}
-            onToggleSave={toggleSave}
-            onNavigate={handleTabChange}
+          <Route
+            path="/dashboard/posts/new"
+            element={
+              <ProtectedRoute>
+                <PostEditor />
+              </ProtectedRoute>
+            }
           />
-        )}
-      </main>
-
-      {/* Footer */}
-      <Footer
-        onNavigate={handleTabChange}
-        onOpenEthicalGuidelines={() => setIsEthicalModalOpen(true)}
-      />
-
-      {/* Bottom Navigation */}
-      <BottomNavBar
-        activeTab={activeTab}
-        onTabChange={handleTabChange}
-        savedCount={savedItemIds.length}
-      />
-
-      {/* Drawers and Modals */}
-      <HeaderDrawer
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        activeTab={activeTab}
-        onNavigate={handleTabChange}
-        onOpenJoinModal={() => setIsJoinModalOpen(true)}
-        onOpenEthicalGuidelines={() => setIsEthicalModalOpen(true)}
-      />
-
-      <ItemDetailModal
-        item={selectedItem}
-        onClose={() => setSelectedItem(null)}
-        isSaved={selectedItem ? savedItemIds.includes(selectedItem.id) : false}
-        onToggleSave={toggleSave}
-      />
-
-      <LineageModal
-        community={selectedCommunity}
-        onClose={() => setSelectedCommunity(null)}
-        onExploreArchives={handleExploreCommunityArchives}
-      />
-
-      <JoinCommunityModal
-        isOpen={isJoinModalOpen}
-        onClose={() => setIsJoinModalOpen(false)}
-      />
-
-      <NotificationModal
-        isOpen={isNotificationsOpen}
-        onClose={() => setIsNotificationsOpen(false)}
-      />
-
-      {/* Ethical Guidelines Modal */}
-      {isEthicalModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 overflow-y-auto">
-          <div
-            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity"
-            onClick={() => setIsEthicalModalOpen(false)}
+          <Route
+            path="/dashboard/posts/:id/edit"
+            element={
+              <ProtectedRoute>
+                <PostEditor />
+              </ProtectedRoute>
+            }
           />
-          <div className="relative w-full max-w-lg bg-[#fdf8f6] rounded-xl shadow-2xl border border-[#dbc1ba]/30 overflow-hidden z-10 p-6 space-y-4 my-auto">
-            <div className="flex justify-between items-center border-b border-[#dbc1ba]/20 pb-3">
-              <div className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-[#6f250f]">verified</span>
-                <h3 className="font-headline-sm text-xl text-[#6f250f] font-bold">
-                  Ethical Preservation Charter
-                </h3>
-              </div>
-              <button
-                onClick={() => setIsEthicalModalOpen(false)}
-                className="text-[#55423e] hover:text-[#1c1b1a]"
-              >
-                <span className="material-symbols-outlined">close</span>
-              </button>
-            </div>
+          <Route
+            path="/dashboard/pages"
+            element={
+              <ProtectedRoute>
+                <PagesView />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/pages/new"
+            element={
+              <ProtectedRoute>
+                <PageEditor />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/dashboard/pages/:id/edit"
+            element={
+              <ProtectedRoute>
+                <PageEditor />
+              </ProtectedRoute>
+            }
+          />
 
-            <div className="space-y-3 font-body-md text-sm text-[#1c1b1a] max-h-80 overflow-y-auto pr-1">
-              <p>
-                <strong>1. Indigenous Ownership & Consent:</strong> All digital representations of sacred artifacts and clan regalia displayed on NTANDA are curated in consultation with elder councils and traditional chiefdoms.
-              </p>
-              <p>
-                <strong>2. Non-Commercial Stewardship:</strong> Educational access is free to scholars, students, and citizens. Commercial exploitation of sacred symbols without community lineage approval is strictly prohibited.
-              </p>
-              <p>
-                <strong>3. Sacred Integrity & Respect:</strong> Items designated for restricted ritual observation are presented with scholarly dignity, preserving spiritual reverence and historical context.
-              </p>
-            </div>
+          <Route
+            path="/admin"
+            element={
+              <AdminRoute>
+                <AdminDashboard />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/content"
+            element={
+              <AdminRoute>
+                <ContentManager />
+              </AdminRoute>
+            }
+          />
+          <Route
+            path="/admin/users"
+            element={
+              <AdminRoute>
+                <UsersManager />
+              </AdminRoute>
+            }
+          />
 
-            <div className="pt-2 text-right">
-              <button
-                onClick={() => setIsEthicalModalOpen(false)}
-                className="bg-[#6f250f] text-white px-6 py-2 rounded-lg font-label-md text-sm hover:bg-[#8e3b24]"
-              >
-                Acknowledge & Close
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-    </div>
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }

@@ -1,5 +1,17 @@
+// SearchView.tsx — Digital Artifact Archive tab.
+// Responsibilities:
+//   - Loads artifacts and filters by a free-text query across title, culture,
+//     location, material, description and reference number.
+//   - Supports three sort orders: chronological (by estimated age string),
+//     region (location) and material.
+//   - Shows artifacts in list rows with audio indicator (if audioTrack set),
+//     bookmark toggle and "View Significance" which opens the detail modal.
+//   - Progressive loading: only `visibleCount` items render and a
+//     "Load More Artifacts" button reveals more in batches of 4.
+//   - initialQuery prop pre-fills the search box (used by the community
+//     "Explore archives" flow).
 import React, { useState, useMemo } from 'react';
-import { ARTIFACTS } from '../data/mockData';
+import { useArtifacts } from '../lib/useContent';
 import { ArtifactItem } from '../types';
 
 interface SearchViewProps {
@@ -18,9 +30,10 @@ export const SearchView: React.FC<SearchViewProps> = ({
   const [searchQuery, setSearchQuery] = useState(initialQuery);
   const [sortBy, setSortBy] = useState<'chronological' | 'region' | 'material'>('chronological');
   const [visibleCount, setVisibleCount] = useState(6);
+  const { items: artifacts, loading } = useArtifacts();
 
   const filteredArtifacts = useMemo(() => {
-    let result = ARTIFACTS.filter((art) => {
+    let result = artifacts.filter((art) => {
       const q = searchQuery.toLowerCase();
       return (
         art.title.toLowerCase().includes(q) ||
@@ -42,7 +55,7 @@ export const SearchView: React.FC<SearchViewProps> = ({
     }
 
     return result;
-  }, [searchQuery, sortBy]);
+  }, [artifacts, searchQuery, sortBy]);
 
   const displayedArtifacts = filteredArtifacts.slice(0, visibleCount);
 
@@ -124,7 +137,12 @@ export const SearchView: React.FC<SearchViewProps> = ({
       </section>
 
       {/* Artifact List */}
-      {displayedArtifacts.length === 0 ? (
+      {loading ? (
+        <div className="text-center py-16 bg-white rounded-xl border border-[#dbc1ba]/30 p-8">
+          <div className="w-8 h-8 border-4 border-[#dbc1ba] border-t-[#6f250f] rounded-full animate-spin mx-auto"></div>
+          <p className="font-body-md text-sm text-[#55423e] mt-3">Loading artifacts...</p>
+        </div>
+      ) : displayedArtifacts.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-xl border border-[#dbc1ba]/30 p-8">
           <span className="material-symbols-outlined text-5xl text-[#88726c] mb-2">
             search_off
