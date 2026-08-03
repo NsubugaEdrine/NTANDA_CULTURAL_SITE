@@ -86,6 +86,10 @@ export const AuthPage: React.FC = () => {
     if (result.error) setError(result.error);
   };
 
+  const handleContinueAsGuest = () => {
+    navigate('/', { replace: true });
+  };
+
   return (
     <div className="min-h-screen flex flex-col md:flex-row bg-[#fdf8f6]">
       {/* Brand panel */}
@@ -137,6 +141,19 @@ export const AuthPage: React.FC = () => {
               Continue with Apple (iCloud)
             </span>
           </Button>
+
+          <div className="flex items-center gap-3 my-6">
+            <div className="flex-1 h-px bg-[#dbc1ba]/40"></div>
+            <span className="font-label-md text-xs text-[#55423e]">or</span>
+            <div className="flex-1 h-px bg-[#dbc1ba]/40"></div>
+          </div>
+
+          <Button variant="ghost" className="w-full" type="button" onClick={handleContinueAsGuest}>
+            Continue as Guest
+          </Button>
+          <p className="font-body-md text-xs text-[#88726c] mt-2 text-center">
+            Browse the heritage site freely — no account needed.
+          </p>
 
           <div className="flex items-center gap-3 my-6">
             <div className="flex-1 h-px bg-[#dbc1ba]/40"></div>
