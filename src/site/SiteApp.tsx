@@ -42,10 +42,10 @@ export default function SiteApp() {
   const [selectedCommunity, setSelectedCommunity] = useState<CommunityItem | null>(null);
   const [searchInitialQuery, setSearchInitialQuery] = useState('');
 
-  // Local storage for saved bookmarks
+  // Local storage for saved bookmarks (migrated from the legacy 'ntanda_saved_items' key)
   const [savedItemIds, setSavedItemIds] = useState<string[]>(() => {
     try {
-      const stored = localStorage.getItem('ntanda_saved_items');
+      const stored = localStorage.getItem('ubuntu_gen_saved_items') ?? localStorage.getItem('ntanda_saved_items');
       return stored ? JSON.parse(stored) : ['reg-omukama-crown', 'art-talking-drums'];
     } catch {
       return ['reg-omukama-crown', 'art-talking-drums'];
@@ -54,7 +54,8 @@ export default function SiteApp() {
 
   useEffect(() => {
     try {
-      localStorage.setItem('ntanda_saved_items', JSON.stringify(savedItemIds));
+      localStorage.setItem('ubuntu_gen_saved_items', JSON.stringify(savedItemIds));
+      localStorage.removeItem('ntanda_saved_items');
     } catch {
       // Ignore quota errors
     }

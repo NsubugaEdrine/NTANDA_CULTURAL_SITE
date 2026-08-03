@@ -1,5 +1,5 @@
 -- ============================================================
--- NTANDA Cultural Heritage Site — Seed data
+-- UBUNTU-GEN Cultural Connect — Seed data
 -- Run after schema + storage files.
 -- ============================================================
 

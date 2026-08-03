@@ -1,5 +1,5 @@
 -- ============================================================
--- NTANDA Cultural Heritage Site — Storage buckets & policies
+-- UBUNTU-GEN Cultural Connect — Storage buckets & policies
 -- Run after the schema file.
 -- ============================================================
 

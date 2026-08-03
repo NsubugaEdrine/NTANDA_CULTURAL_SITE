@@ -268,8 +268,9 @@ soundscape via `AudioPlayerWidget`); community clicks open `LineageModal`.
 
 ### Bookmarks (My Saved Archives)
 
-Bookmarks are stored in `localStorage` under `ntanda_saved_items` (an array of
-ids) and owned by `SiteApp` (`savedItemIds`). This means saved items persist
+Bookmarks are stored in `localStorage` under `ubuntu_gen_saved_items` (an array of
+ids; legacy saves under `ntanda_saved_items` are migrated automatically) and owned
+by `SiteApp` (`savedItemIds`). This means saved items persist
 across reloads on the same browser — no account required. The badge on the
 bottom "Saved" tab shows the current count.
 

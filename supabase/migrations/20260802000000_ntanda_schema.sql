@@ -1,5 +1,5 @@
 -- ============================================================
--- NTANDA Cultural Heritage Site — Schema
+-- UBUNTU-GEN Cultural Connect — Schema
 -- Apply in the Supabase SQL Editor on the target project.
 -- Run order: 1) schema  2) storage  3) seed
 -- ============================================================
