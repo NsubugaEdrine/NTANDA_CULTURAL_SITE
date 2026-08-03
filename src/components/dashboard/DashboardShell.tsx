@@ -41,7 +41,7 @@ export const DashboardShell: React.FC<DashboardShellProps> = ({ title, subtitle,
       <aside className="lg:w-64 lg:min-h-screen bg-white border-r border-[#dbc1ba]/30 lg:sticky lg:top-0 lg:h-screen overflow-y-auto">
         <div className="p-5 border-b border-[#dbc1ba]/20">
           <Link to="/" className="font-display-lg-mobile text-2xl text-[#6f250f] font-bold tracking-tight">
-            NTANDA
+            UBUNTU-GEN
           </Link>
           <p className="font-label-md text-[11px] text-[#855400] uppercase tracking-widest mt-0.5">
             {isAdmin ? 'Administration Console' : 'Contributor Studio'}

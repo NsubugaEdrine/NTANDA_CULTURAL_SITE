@@ -96,7 +96,7 @@ export const AuthPage: React.FC = () => {
       <div className="md:w-1/2 bg-[#6f250f] text-white p-8 md:p-16 flex flex-col justify-between pattern-overlay">
         <div>
           <Link to="/" className="font-display-lg-mobile text-3xl font-bold tracking-tight">
-            NTANDA
+            UBUNTU-GEN
           </Link>
           <p className="font-label-md text-[#ffb9a7] uppercase tracking-widest text-xs mt-1">
             Heritage Platform
@@ -128,7 +128,7 @@ export const AuthPage: React.FC = () => {
             <p className="font-body-md text-sm text-[#55423e] mt-1">
               {mode === 'signin'
                 ? 'Sign in to continue sharing your heritage.'
-                : 'Join NTANDA to contribute cultural content.'}
+                : 'Join UBUNTU-GEN to contribute cultural content.'}
             </p>
           </div>
 
@@ -220,7 +220,7 @@ export const AuthPage: React.FC = () => {
           <p className="font-body-md text-sm text-[#55423e] mt-6 text-center">
             {mode === 'signin' ? (
               <>
-                New to NTANDA?{' '}
+                New to UBUNTU-GEN?{' '}
                 <button
                   onClick={() => switchMode('signup')}
                   className="text-[#6f250f] font-semibold hover:underline cursor-pointer"

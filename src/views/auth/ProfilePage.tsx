@@ -119,7 +119,7 @@ export const ProfilePage: React.FC = () => {
       <header className="flex items-center justify-between px-4 md:px-16 h-16 bg-[#fdf8f6]/95 border-b border-[#dbc1ba]/20 sticky top-0 z-30">
         <div className="flex items-center gap-3">
           <Link to="/" className="font-display-lg-mobile text-2xl text-[#6f250f] font-bold tracking-tight">
-            NTANDA
+            UBUNTU-GEN
           </Link>
         </div>
         <div className="flex items-center gap-2">
@@ -168,7 +168,7 @@ export const ProfilePage: React.FC = () => {
                   />
                 </label>
                 <p className="font-body-md text-xs text-[#55423e] mt-1.5">
-                  PNG or JPG. Stored securely in NTANDA's cloud.
+                  PNG or JPG. Stored securely in UBUNTU-GEN's cloud.
                 </p>
               </div>
             </div>

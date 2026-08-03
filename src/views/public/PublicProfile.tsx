@@ -99,7 +99,7 @@ export const PublicProfile: React.FC = () => {
           <span className="material-symbols-outlined text-5xl text-[#88726c] mb-2">person_off</span>
           <h2 className="font-headline-sm text-xl text-[#1c1b1a]">Member not found</h2>
           <p className="font-body-md text-sm text-[#55423e] mt-1">
-            No NTANDA member exists with the username “{userName}”.
+            No UBUNTU-GEN member exists with the username “{userName}”.
           </p>
         </div>
       ) : (
@@ -119,7 +119,7 @@ export const PublicProfile: React.FC = () => {
                 <div className="pb-1">
                   <div className="flex flex-wrap items-center gap-2">
                     <h1 className="font-headline-md text-2xl md:text-3xl text-[#1c1b1a] font-bold">
-                      {profile.full_name ?? profile.user_name ?? 'NTANDA Member'}
+                      {profile.full_name ?? profile.user_name ?? 'UBUNTU-GEN Member'}
                     </h1>
                     <Badge color={profile.role === 'admin' ? 'gold' : 'green'}>
                       {profile.role === 'admin' ? 'Administrator' : 'Contributor'}

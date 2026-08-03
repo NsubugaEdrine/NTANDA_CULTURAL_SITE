@@ -26,7 +26,7 @@ interface PageWithAuthor extends Page {
 const AuthorLink: React.FC<{ author: Pick<Profile, 'id' | 'user_name' | 'full_name' | 'avatar_url'> | null }> = ({
   author,
 }) => {
-  const display = author?.user_name ?? author?.full_name ?? 'NTANDA Contributor';
+  const display = author?.user_name ?? author?.full_name ?? 'UBUNTU-GEN Contributor';
   if (!author?.user_name) {
     return <span className="font-label-md text-xs text-[#55423e]">{display}</span>;
   }
@@ -99,7 +99,7 @@ export const CommunityFeed: React.FC = () => {
           Community Stories
         </h2>
         <p className="font-body-lg text-sm sm:text-base text-[#55423e] max-w-2xl">
-          Personal cultural posts, blogs and vlogs shared by NTANDA contributors.
+          Personal cultural posts, blogs and vlogs shared by UBUNTU-GEN contributors.
         </p>
       </section>
 

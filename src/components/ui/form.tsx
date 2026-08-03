@@ -1,6 +1,6 @@
 // form.tsx — Reusable UI form primitives (design-system components).
 // Responsibilities:
-//   - Input / TextArea / Select: labeled fields with the NTANDA look,
+//   - Input / TextArea / Select: labeled fields with the UBUNTU-GEN look,
 //     forwarded props so they behave like native elements.
 //   - Button: primary / secondary / ghost / danger variants.
 //   - Badge: colored status/type pill (brown, gold, green, red).

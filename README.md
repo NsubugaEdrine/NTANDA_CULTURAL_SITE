@@ -1,6 +1,6 @@
-# NTANDA — African Cultural Heritage Platform
+# UBUNTU-GEN Cultural Connect — African Cultural Heritage Platform
 
-**NTANDA** is a digital cultural heritage platform for preserving, documenting and
+**UBUNTU-GEN Cultural Connect** is a digital cultural heritage platform for preserving, documenting and
 showcasing African regalia, artifacts, ethnic communities, traditions and oral
 history. It combines a public heritage "museum" experience (browse, search,
 bookmark) with a contributor **Studio** (posts, blogs, vlogs, personal pages)

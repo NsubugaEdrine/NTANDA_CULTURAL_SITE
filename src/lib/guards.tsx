@@ -17,7 +17,7 @@ const LoadingScreen: React.FC = () => (
   <div className="min-h-screen flex items-center justify-center bg-[#fdf8f6]">
     <div className="flex flex-col items-center gap-3">
       <div className="w-10 h-10 border-4 border-[#dbc1ba] border-t-[#6f250f] rounded-full animate-spin"></div>
-      <p className="font-label-md text-sm text-[#55423e]">Loading NTANDA...</p>
+      <p className="font-label-md text-sm text-[#55423e]">Loading UBUNTU-GEN...</p>
     </div>
   </div>
 );

@@ -59,7 +59,7 @@ export const AdminDashboard: React.FC = () => {
   ];
 
   return (
-    <DashboardShell title="Admin Panel" subtitle="Full control over the NTANDA platform">
+    <DashboardShell title="Admin Panel" subtitle="Full control over the UBUNTU-GEN platform">
       <div className="space-y-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {tiles.map((tile) => (

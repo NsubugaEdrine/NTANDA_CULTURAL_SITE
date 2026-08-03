@@ -58,7 +58,7 @@ export const JoinCommunityModal: React.FC<JoinCommunityModalProps> = ({
             Cultural Preservation Network
           </span>
           <h2 className="font-display-lg-mobile text-2xl text-white font-bold">
-            Join the NTANDA Community
+            Join the UBUNTU-GEN Community
           </h2>
           <p className="font-body-md text-xs text-[#ffb9a7] mt-1">
             Contribute oral histories, family regalia photographs, or join our scholar archive network.

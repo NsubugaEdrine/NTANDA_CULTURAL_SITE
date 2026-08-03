@@ -46,7 +46,7 @@ export const HeaderDrawer: React.FC<HeaderDrawerProps> = ({
           <div className="flex items-center justify-between pb-6 border-b border-[#dbc1ba]/20">
             <div>
               <h2 className="font-display-lg-mobile text-[#6f250f] font-bold tracking-tight">
-                NTANDA
+                UBUNTU-GEN
               </h2>
               <p className="font-label-md text-[11px] text-[#855400] uppercase tracking-widest mt-0.5">
                 Heritage Platform

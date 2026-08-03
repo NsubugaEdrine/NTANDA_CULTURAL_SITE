@@ -202,7 +202,7 @@ export default function SiteApp() {
 
             <div className="space-y-3 font-body-md text-sm text-[#1c1b1a] max-h-80 overflow-y-auto pr-1">
               <p>
-                <strong>1. Indigenous Ownership & Consent:</strong> All digital representations of sacred artifacts and clan regalia displayed on NTANDA are curated in consultation with elder councils and traditional chiefdoms.
+                <strong>1. Indigenous Ownership & Consent:</strong> All digital representations of sacred artifacts and clan regalia displayed on UBUNTU-GEN are curated in consultation with elder councils and traditional chiefdoms.
               </p>
               <p>
                 <strong>2. Non-Commercial Stewardship:</strong> Educational access is free to scholars, students, and citizens. Commercial exploitation of sacred symbols without community lineage approval is strictly prohibited.

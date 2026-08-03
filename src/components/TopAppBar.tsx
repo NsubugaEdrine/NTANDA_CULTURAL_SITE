@@ -1,7 +1,7 @@
 // TopAppBar.tsx — Fixed header shown on the public site.
 // Responsibilities:
 //   - Hamburger button that opens the navigation HeaderDrawer.
-//   - NTANDA wordmark that returns to the Home tab.
+//   - UBUNTU-GEN wordmark that returns to the Home tab.
 //   - Auth-aware account button: shows "Sign In" for guests and a
 //     "My Studio"/avatar link to /dashboard for signed-in users.
 //   - Notifications bell with an animated unread indicator (default 3,
@@ -44,7 +44,7 @@ export const TopAppBar: React.FC<TopAppBarProps> = ({
           className="flex items-center gap-2 group cursor-pointer text-left focus:outline-none"
         >
           <h1 className="font-display-lg-mobile md:text-[32px] text-[#6f250f] tracking-tighter font-bold group-hover:opacity-90 transition-opacity">
-            NTANDA
+            UBUNTU-GEN
           </h1>
         </button>
       </div>

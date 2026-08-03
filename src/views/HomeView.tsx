@@ -172,7 +172,7 @@ export const HomeView: React.FC<HomeViewProps> = ({
               Latest Artifacts
             </h3>
             <p className="font-body-md text-sm text-[#55423e]">
-              Recently added to the NTANDA digital archives
+              Recently added to the UBUNTU-GEN digital archives
             </p>
           </div>
           <button
